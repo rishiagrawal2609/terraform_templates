@@ -22,7 +22,8 @@ variable "zone" {
 
 variable "tags" {
   description = "set(string):Network tags"
-  type = set(string)
+  type = list(string)
+  
 }
 
 variable "description"{
