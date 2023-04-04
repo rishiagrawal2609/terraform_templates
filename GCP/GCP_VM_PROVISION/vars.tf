@@ -67,7 +67,7 @@ variable "metadata_startup_script" {
 variable "OSimage" {
   description = "OS Image to use"
   type = string
-  source = "image.list_images"
+  source = "image.list_global_images"
 }
 
 variable "auto_delete" {
