@@ -99,7 +99,7 @@ variable "source" {
   description = "Existing source of the boot-disk(self-id)"
   type = string
   default = null
-  source = "disk.list_disks"
+  source = "disk.list_disk"
 }
 
 variable "can_ip_forward" {
