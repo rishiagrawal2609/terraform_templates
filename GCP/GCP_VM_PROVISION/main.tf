@@ -12,7 +12,7 @@ resource "google_compute_instance" "main" {
     auto_delete = var.auto_delete
     device_name = var.diskName
     mode = var.diskMode
-    source = var.source
+    source = var.disk_source
   }
   network_interface {
     network = var.myVmNet
