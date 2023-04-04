@@ -95,7 +95,7 @@ variable "diskSize" {
   type = number
   default = 20
 }
-variable "source" {
+variable "disk_source" {
   description = "Existing source of the boot-disk(self-id)"
   type = string
   default = null
