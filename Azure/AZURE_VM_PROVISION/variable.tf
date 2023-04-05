@@ -2,7 +2,7 @@ variable "image_os" {
   description = "(Required) Enum flag of virtual machine's os system"
   type        = string
   nullable    = false
-  allowed_values = ["windows", "linux"]
+  allowed_value = ["windows", "linux"]
   # validation {
   #   condition     = contains(["windows", "linux"], var.image_os)
   #   error_message = "`image_os` must be either `windows` or `linux`."
