@@ -36,11 +36,11 @@ resource "azurerm_storage_account" "boot_diagnostics" {
   resource_group_name              = var.resource_group_name
   access_tier                      = var.new_boot_diagnostics_storage_account.access_tier
   allow_nested_items_to_be_public  = var.new_boot_diagnostics_storage_account.allow_nested_items_to_be_public
-  cross_tenant_replication_enabled = var.new_boot_diagnostics_storage_account.cross_tenant_replication_enabled
-  default_to_oauth_authentication  = var.new_boot_diagnostics_storage_account.default_to_oauth_authentication
+  #cross_tenant_replication_enabled = var.new_boot_diagnostics_storage_account.cross_tenant_replication_enabled
+  #default_to_oauth_authentication  = var.new_boot_diagnostics_storage_account.default_to_oauth_authentication
   enable_https_traffic_only        = var.new_boot_diagnostics_storage_account.enable_https_traffic_only
   min_tls_version                  = var.new_boot_diagnostics_storage_account.min_tls_version
-  public_network_access_enabled    = var.new_boot_diagnostics_storage_account.public_network_access_enabled
+  #public_network_access_enabled    = var.new_boot_diagnostics_storage_account.public_network_access_enabled
   shared_access_key_enabled        = var.new_boot_diagnostics_storage_account.shared_access_key_enabled
   tags                             = var.tags
 
@@ -68,15 +68,15 @@ resource "azurerm_storage_account" "boot_diagnostics" {
           days = var.new_boot_diagnostics_storage_account.blob_properties.delete_retention_policy.days
         }
       }
-      dynamic "restore_policy" {
-        for_each = var.new_boot_diagnostics_storage_account.blob_properties.restore_policy == null ? [] : [
-          "restore_policy"
-        ]
+      # dynamic "restore_policy" {
+      #   for_each = var.new_boot_diagnostics_storage_account.blob_properties.restore_policy == null ? [] : [
+      #     "restore_policy"
+      #   ]
 
-        content {
-          days = var.new_boot_diagnostics_storage_account.blob_properties.restore_policy.days
-        }
-      }
+      #   content {
+      #     days = var.new_boot_diagnostics_storage_account.blob_properties.restore_policy.days
+      #   }
+      # }
     }
   }
   #checkov:skip=CKV2_AZURE_1
@@ -115,7 +115,7 @@ resource "azurerm_linux_virtual_machine" "vm_linux" {
   admin_password                  = var.admin_password
   allow_extension_operations      = var.allow_extension_operations
   availability_set_id             = var.availability_set_id
-  capacity_reservation_group_id   = var.capacity_reservation_group_id
+  #capacity_reservation_group_id   = var.capacity_reservation_group_id
   computer_name                   = coalesce(var.computer_name, var.name)
   custom_data                     = var.custom_data
   dedicated_host_group_id         = var.dedicated_host_group_id
@@ -127,7 +127,7 @@ resource "azurerm_linux_virtual_machine" "vm_linux" {
   extensions_time_budget          = var.extensions_time_budget
   license_type                    = var.license_type
   max_bid_price                   = var.max_bid_price
-  patch_assessment_mode           = var.patch_assessment_mode
+ # patch_assessment_mode           = var.patch_assessment_mode
   patch_mode                      = local.patch_mode
   platform_fault_domain           = var.platform_fault_domain
   priority                        = var.priority
@@ -147,21 +147,21 @@ resource "azurerm_linux_virtual_machine" "vm_linux" {
     disk_encryption_set_id           = var.os_disk.disk_encryption_set_id
     disk_size_gb                     = var.os_disk.disk_size_gb
     name                             = var.os_disk.name
-    secure_vm_disk_encryption_set_id = var.os_disk.secure_vm_disk_encryption_set_id
-    security_encryption_type         = var.os_disk.security_encryption_type
+    #secure_vm_disk_encryption_set_id = var.os_disk.secure_vm_disk_encryption_set_id
+    #1security_encryption_type         = var.os_disk.security_encryption_type
     write_accelerator_enabled        = var.os_disk.write_accelerator_enabled
 
-    dynamic "diff_disk_settings" {
-      for_each = var.os_disk.diff_disk_settings == null ? [] : [
-        "diff_disk_settings"
-      ]
+  #   dynamic "diff_disk_settings" {
+  #     for_each = var.os_disk.diff_disk_settings == null ? [] : [
+  #       "diff_disk_settings"
+  #     ]
 
-      content {
-        option    = var.os_disk.diff_disk_settings.option
-        placement = var.os_disk.diff_disk_settings.placement
-      }
-    }
-  }
+  #     content {
+  #       option    = var.os_disk.diff_disk_settings.option
+  #       placement = var.os_disk.diff_disk_settings.placement
+  #     }
+  #   }
+   }
   dynamic "additional_capabilities" {
     for_each = var.vm_additional_capabilities == null ? [] : [
       "additional_capabilities"
@@ -186,16 +186,16 @@ resource "azurerm_linux_virtual_machine" "vm_linux" {
       storage_account_uri = try(azurerm_storage_account.boot_diagnostics[0].primary_blob_endpoint, var.boot_diagnostics_storage_account_uri)
     }
   }
-  dynamic "gallery_application" {
-    for_each = { for app in var.gallery_application : jsonencode(app) => app }
+  # dynamic "gallery_application" {
+  #   for_each = { for app in var.gallery_application : jsonencode(app) => app }
 
-    content {
-      version_id             = gallery_application.value.version_id
-      configuration_blob_uri = gallery_application.value.configuration_blob_uri
-      order                  = gallery_application.value.order
-      tag                    = gallery_application.value.tag
-    }
-  }
+  #   content {
+  #     version_id             = gallery_application.value.version_id
+  #     configuration_blob_uri = gallery_application.value.configuration_blob_uri
+  #     order                  = gallery_application.value.order
+  #     tag                    = gallery_application.value.tag
+  #   }
+  # }
   dynamic "identity" {
     for_each = var.identity == null ? [] : ["identity"]
 
@@ -301,7 +301,7 @@ resource "azurerm_windows_virtual_machine" "vm_windows" {
   size                          = var.size
   allow_extension_operations    = var.allow_extension_operations
   availability_set_id           = var.availability_set_id
-  capacity_reservation_group_id = var.capacity_reservation_group_id
+  #capacity_reservation_group_id = var.capacity_reservation_group_id
   computer_name                 = coalesce(var.computer_name, var.name)
   custom_data                   = var.custom_data
   dedicated_host_group_id       = var.dedicated_host_group_id
@@ -314,8 +314,8 @@ resource "azurerm_windows_virtual_machine" "vm_windows" {
   hotpatching_enabled           = var.hotpatching_enabled
   license_type                  = var.license_type
   max_bid_price                 = var.max_bid_price
-  patch_assessment_mode         = var.patch_assessment_mode
-  patch_mode                    = local.patch_mode
+  #patch_assessment_mode         = var.patch_assessment_mode
+  #patch_mode                    = local.patch_mode
   platform_fault_domain         = var.platform_fault_domain
   priority                      = var.priority
   provision_vm_agent            = var.provision_vm_agent
@@ -335,20 +335,20 @@ resource "azurerm_windows_virtual_machine" "vm_windows" {
     disk_encryption_set_id           = var.os_disk.disk_encryption_set_id
     disk_size_gb                     = var.os_disk.disk_size_gb
     name                             = var.os_disk.name
-    secure_vm_disk_encryption_set_id = var.os_disk.secure_vm_disk_encryption_set_id
-    security_encryption_type         = var.os_disk.security_encryption_type
+    #secure_vm_disk_encryption_set_id = var.os_disk.secure_vm_disk_encryption_set_id
+    #security_encryption_type         = var.os_disk.security_encryption_type
     write_accelerator_enabled        = var.os_disk.write_accelerator_enabled
 
-    dynamic "diff_disk_settings" {
-      for_each = var.os_disk.diff_disk_settings == null ? [] : [
-        "diff_disk_settings"
-      ]
+    # dynamic "diff_disk_settings" {
+    #   for_each = var.os_disk.diff_disk_settings == null ? [] : [
+    #     "diff_disk_settings"
+    #   ]
 
-      content {
-        option    = var.os_disk.diff_disk_settings.option
-        placement = var.os_disk.diff_disk_settings.placement
-      }
-    }
+    #   content {
+    #     option    = var.os_disk.diff_disk_settings.option
+    #     placement = var.os_disk.diff_disk_settings.placement
+    #   }
+    # }
   }
   dynamic "additional_capabilities" {
     for_each = var.vm_additional_capabilities == null ? [] : [
@@ -376,16 +376,16 @@ resource "azurerm_windows_virtual_machine" "vm_windows" {
       storage_account_uri = try(azurerm_storage_account.boot_diagnostics[0].primary_blob_endpoint, var.boot_diagnostics_storage_account_uri)
     }
   }
-  dynamic "gallery_application" {
-    for_each = { for app in var.gallery_application : jsonencode(app) => app }
+  # dynamic "gallery_application" {
+  #   for_each = { for app in var.gallery_application : jsonencode(app) => app }
 
-    content {
-      version_id             = gallery_application.value.version_id
-      configuration_blob_uri = gallery_application.value.configuration_blob_uri
-      order                  = gallery_application.value.order
-      tag                    = gallery_application.value.tag
-    }
-  }
+  #   content {
+  #     version_id             = gallery_application.value.version_id
+  #     configuration_blob_uri = gallery_application.value.configuration_blob_uri
+  #     order                  = gallery_application.value.order
+  #     tag                    = gallery_application.value.tag
+  #   }
+  # }
   dynamic "identity" {
     for_each = var.identity == null ? [] : ["identity"]
 
@@ -490,7 +490,7 @@ locals {
     admin_username                = try(azurerm_windows_virtual_machine.vm_windows[0].admin_username, null)
     network_interface_ids         = try(azurerm_windows_virtual_machine.vm_windows[0].network_interface_ids, null)
     availability_set_id           = try(azurerm_windows_virtual_machine.vm_windows[0].availability_set_id, null)
-    capacity_reservation_group_id = try(azurerm_windows_virtual_machine.vm_windows[0].capacity_reservation_group_id, null)
+    #capacity_reservation_group_id = try(azurerm_windows_virtual_machine.vm_windows[0].capacity_reservation_group_id, null)
     computer_name                 = try(azurerm_windows_virtual_machine.vm_windows[0].computer_name, null)
     dedicated_host_id             = try(azurerm_windows_virtual_machine.vm_windows[0].dedicated_host_id, null)
     dedicated_host_group_id       = try(azurerm_windows_virtual_machine.vm_windows[0].dedicated_host_group_id, null)
@@ -508,7 +508,7 @@ locals {
     admin_username                = try(azurerm_linux_virtual_machine.vm_linux[0].admin_username, null)
     network_interface_ids         = try(azurerm_linux_virtual_machine.vm_linux[0].network_interface_ids, null)
     availability_set_id           = try(azurerm_linux_virtual_machine.vm_linux[0].availability_set_id, null)
-    capacity_reservation_group_id = try(azurerm_linux_virtual_machine.vm_linux[0].capacity_reservation_group_id, null)
+    #capacity_reservation_group_id = try(azurerm_linux_virtual_machine.vm_linux[0].capacity_reservation_group_id, null)
     computer_name                 = try(azurerm_linux_virtual_machine.vm_linux[0].computer_name, null)
     dedicated_host_id             = try(azurerm_linux_virtual_machine.vm_linux[0].dedicated_host_id, null)
     dedicated_host_group_id       = try(azurerm_linux_virtual_machine.vm_linux[0].dedicated_host_group_id, null)
@@ -591,45 +591,45 @@ resource "azurerm_managed_disk" "disk" {
   on_demand_bursting_enabled       = each.value.on_demand_bursting_enabled
   os_type                          = title(var.image_os)
   public_network_access_enabled    = each.value.public_network_access_enabled
-  secure_vm_disk_encryption_set_id = each.value.secure_vm_disk_encryption_set_id
-  security_type                    = each.value.security_type
+  #secure_vm_disk_encryption_set_id = each.value.secure_vm_disk_encryption_set_id
+  #security_type                    = each.value.security_type
   source_resource_id               = each.value.source_resource_id
   source_uri                       = each.value.source_uri
   storage_account_id               = each.value.storage_account_id
   tags                             = var.tags
   tier                             = each.value.tier
   trusted_launch_enabled           = each.value.trusted_launch_enabled
-  upload_size_bytes                = each.value.upload_size_bytes
+  #upload_size_bytes                = each.value.upload_size_bytes
   zone                             = var.zone
 
-  dynamic "encryption_settings" {
-    for_each = each.value.encryption_settings == null ? [] : [
-      "encryption_settings"
-    ]
+  # dynamic "encryption_settings" {
+  #   for_each = each.value.encryption_settings == null ? [] : [
+  #     "encryption_settings"
+  #   ]
 
-    content {
-      dynamic "disk_encryption_key" {
-        for_each = each.value.encryption_settings.disk_encryption_key == null ? [] : [
-          "disk_encryption_key"
-        ]
+  #   content {
+  #     dynamic "disk_encryption_key" {
+  #       for_each = each.value.encryption_settings.disk_encryption_key == null ? [] : [
+  #         "disk_encryption_key"
+  #       ]
 
-        content {
-          secret_url      = each.value.encryption_settings.disk_encryption_key.secret_url
-          source_vault_id = each.value.encryption_settings.disk_encryption_key.source_vault_id
-        }
-      }
-      dynamic "key_encryption_key" {
-        for_each = each.value.encryption_settings.key_encryption_key == null ? [] : [
-          "key_encryption_key"
-        ]
+  #       content {
+  #         secret_url      = each.value.encryption_settings.disk_encryption_key.secret_url
+  #         source_vault_id = each.value.encryption_settings.disk_encryption_key.source_vault_id
+  #       }
+  #     }
+  #     dynamic "key_encryption_key" {
+  #       for_each = each.value.encryption_settings.key_encryption_key == null ? [] : [
+  #         "key_encryption_key"
+  #       ]
 
-        content {
-          key_url         = each.value.encryption_settings.key_encryption_key.key_url
-          source_vault_id = each.value.encryption_settings.key_encryption_key.source_vault_id
-        }
-      }
-    }
-  }
+  #       content {
+  #         key_url         = each.value.encryption_settings.key_encryption_key.key_url
+  #         source_vault_id = each.value.encryption_settings.key_encryption_key.source_vault_id
+  #       }
+  #     }
+  #   }
+ # }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "attachment" {
@@ -656,19 +656,19 @@ resource "azurerm_virtual_machine_extension" "extensions" {
   virtual_machine_id          = local.virtual_machine.id
   auto_upgrade_minor_version  = each.value.auto_upgrade_minor_version
   automatic_upgrade_enabled   = each.value.automatic_upgrade_enabled
-  failure_suppression_enabled = each.value.failure_suppression_enabled
+  #failure_suppression_enabled = each.value.failure_suppression_enabled
   protected_settings          = each.value.protected_settings
   settings                    = each.value.settings
   tags                        = var.tags
 
-  dynamic "protected_settings_from_key_vault" {
-    for_each = each.value.protected_settings_from_key_vault == null ? [] : [
-      "protected_settings_from_key_vault"
-    ]
+  # dynamic "protected_settings_from_key_vault" {
+  #   for_each = each.value.protected_settings_from_key_vault == null ? [] : [
+  #     "protected_settings_from_key_vault"
+  #   ]
 
-    content {
-      secret_url      = each.value.protected_settings_from_key_vault.secret_url
-      source_vault_id = each.value.protected_settings_from_key_vault.source_vault_id
-    }
-  }
+  #   content {
+  #     secret_url      = each.value.protected_settings_from_key_vault.secret_url
+  #     source_vault_id = each.value.protected_settings_from_key_vault.source_vault_id
+  #   }
+  # }
 }

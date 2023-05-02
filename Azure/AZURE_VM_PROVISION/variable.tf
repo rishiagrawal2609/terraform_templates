@@ -1,13 +1,14 @@
 variable "image_os" {
   description = "(Required) Enum flag of virtual machine's os system"
   nullable    = false
-  allowedValues = ["windows" , "linux"]
+  # allowedValues = ["windows" , "linux"]
+
 }
 
 variable "location" {
   description = "(Required) The Azure location where the Virtual Machine should exist. Changing this forces a new resource to be created."
   nullable    = false
-  source = ""
+  #source = ""
 }
 
 variable "name" {
@@ -279,7 +280,7 @@ variable "dedicated_host_id" {
 variable "disable_password_authentication" {
   type        = bool
   description = "(Optional) Should Password Authentication be disabled on this Virtual Machine? Defaults to `true`. Changing this forces a new resource to be created."
-  default     = true
+  default     = false
 }
 
 variable "edge_zone" {

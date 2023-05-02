@@ -33,9 +33,8 @@ variable "description"{
 
 variable "desired_status" {
   description = "Running state"
-  type = string
   default = "RUNNING"
-  allowed_values = ["RUNNING", "TERMINATED"]
+  allowedValues = ["RUNNING", "TERMINATED"]
 }
 variable "deletion_protection" {
   description = "Bool: Deletion Protection"
@@ -74,8 +73,7 @@ variable "OSimage" {
 variable "auto_delete" {
   description = "Boolean: Boot disk deletion on VM deletion"
   default = true
-  type = bool
-  allowed_values = [true,false]
+  allowedValues = [true,false]
 
 }
 
@@ -86,9 +84,8 @@ variable "diskName" {
 
 variable "diskMode" {
   description = "Mode of the disk"
-  type = string
   default = "READ_WRITE"
-  allowed_values = ["READ_WRITE","READ_ONLY"]
+  allowedValues = ["READ_WRITE","READ_ONLY"]
 }
 
 variable "diskSize" {
@@ -107,7 +104,7 @@ variable "can_ip_forward" {
   description = "CAN IP FORWARD"
   type = bool
   default = false
-  allowed_values = [true,false]
+  allowedValues = [true,false]
 }
 
 # network interface
@@ -149,20 +146,17 @@ variable "ip_cidr_range_alias" {
 # shilded instance config
 variable "enable_secure_boot" {
   description = "Enable Secure Boot"
-  type = bool
-  allowed_values = [true,false]
+  allowedValues = [true,false]
 }
 
 variable "enable_integrity_monitoring" {
   description = "Enable Integrity monitoring"
-  type = bool
-  allowed_values = [true , false]
+  allowedValues = [true , false]
 }
 
 variable "enable_vtpm" {
   description = "Enable vTPM"
-  type = bool
-  allowed_values = [true,false]
+  allowedValues = [true,false]
 }
 
 
