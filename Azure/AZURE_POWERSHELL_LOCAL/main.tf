@@ -1,3 +1,8 @@
+resource "azurerm_resource_group" "example" {
+  name     = "example-resource-group"
+  location = "East US"
+}
+
 resource "null_resource" "execute_powershell" {
   provisioner "local-exec" {
     command = <<-EOT
@@ -7,6 +12,10 @@ resource "null_resource" "execute_powershell" {
     interpreter = ["PowerShell", "-Command"]
     working_dir = path.module
   }
+  depends_on = [
+    azurerm_resource_group.example,
+  ]
+
 }
 
 data "local_file" "random_output" {
