@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "example" {
-  name     = "example-resource-group"
+  name     = var.rg_name
   location = "East US"
 }
 
@@ -9,7 +9,7 @@ resource "null_resource" "execute_powershell" {
       $randomValue = Get-Random -Minimum 100 -Maximum 1000
       $randomValue | Out-File random_output.txt
     EOT
-    interpreter = ["PowerShell", "-Command"]
+    interpreter = ["/usr/bin/pwsh", "-Command"]
     working_dir = path.module
   }
   depends_on = [
