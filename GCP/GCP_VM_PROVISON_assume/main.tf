@@ -1,49 +1,42 @@
+resource "google_compute_instance" "default" {
+  name         = "virtual-machine-from-terraform"
+  machine_type = "f1-micro"
+  zone         = "us-central1-a"
 
-resource "google_compute_instance" "main" {
-  name = var.Vmname
-  machine_type = var.machine_type
-  zone = var.zone
-  tags = var.tags
   boot_disk {
     initialize_params {
-      image = var.OSimage
-      size = var.diskSize
+      image = "projects/debian-cloud/global/images/debian-11-bullseye-v20230629"
     }
-    auto_delete = var.auto_delete
-    device_name = var.diskName
-    mode = var.diskMode
-    source = var.disk_source
-  }
-  network_interface {
-    network = var.myVmNet
-    subnetwork = var.mySubNet
-    subnetwork_project = var.subnetwork_project
-    network_ip = var.networkip
-    access_config {
-      nat_ip = var.nat_ip
-    }
-    alias_ip_range {
-      ip_cidr_range = var.ip_cidr_range_alias
-    }
-  }
-  can_ip_forward = var.can_ip_forward
-  description = var.description
-  desired_status = var.desired_status
-  deletion_protection = var.deletion_protection
-  hostname = var.hostname
-  labels = var.labels
-  metadata = var.metadata
-  metadata_startup_script = var.metadata_startup_script
-  project = var.project
-  
-  # service_account {
-  #   email = ""
-  #   scope = ""
-  # }
-  shielded_instance_config {
-    enable_secure_boot = var.enable_secure_boot
-    enable_integrity_monitoring = var.enable_integrity_monitoring
-    enable_vtpm = var.enable_vtpm
   }
 
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Include this section to give the VM an external ip address
+    }
+  }
+
+    metadata_startup_script = "sudo apt-get update && sudo apt-get install apache2 -y && echo '<!doctype html><html><body><h1>Avenue Code is the leading software consulting agency focused on delivering end-to-end development solutions for digital transformation across every vertical. We pride ourselves on our technical acumen, our collaborative problem-solving ability, and the warm professionalism of our teams.!</h1></body></html>' | sudo tee /var/www/html/index.html"
+
+    // Apply the firewall rule to allow external IPs to access this instance
+    tags = ["http-server"]
+}
+
+resource "google_compute_firewall" "http-server" {
+  name    = "default-allow-http-terraform"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  // Allow traffic from everywhere to instances with an http-server tag
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["http-server"]
+}
+
+output "ip" {
+  value = "${google_compute_instance.default.network_interface.0.access_config.0.nat_ip}"
 }

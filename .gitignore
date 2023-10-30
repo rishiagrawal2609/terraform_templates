@@ -1,3 +1,7 @@
 *.tfstat*
 .terrafor*
 *.tfvars
+*key.json
+provder
+jhg
+*.py
