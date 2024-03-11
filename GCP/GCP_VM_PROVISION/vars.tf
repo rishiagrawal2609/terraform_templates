@@ -127,10 +127,10 @@ variable "subnetwork_project" {
   type = string
 }
 
-variable "networkip" {
-  description = "Give the IP in CIDR Range"
-  type = string
-}
+#variable "networkip" {
+ # description = "Give the IP in CIDR Range"
+ # type = string
+#}
 
 variable "nat_ip" {
   description = "Give NAT IP"
@@ -138,10 +138,10 @@ variable "nat_ip" {
   default = null
 }
 
-variable "ip_cidr_range_alias" {
-  description = "IP  IN CIDR RANGE FOR ALIAS IP"
-  type = string
-}
+#variable "ip_cidr_range_alias" {
+ # description = "IP  IN CIDR RANGE FOR ALIAS IP"
+ # type = string
+#}
 
 # shilded instance config
 variable "enable_secure_boot" {
