@@ -67,7 +67,7 @@ variable "metadata_startup_script" {
 variable "OSimage" {
   description = "OS Image to use"
   type = string
-  source = "image.list_global_images"
+  default = "projects/debian-cloud/global/images/debian-11-bullseye-v20230629"
 }
 
 variable "auto_delete" {
