@@ -18,13 +18,13 @@ resource "google_compute_instance" "main" {
     network = var.myVmNet
     subnetwork = var.mySubNet
     subnetwork_project = var.subnetwork_project
-    network_ip = var.networkip
+    #network_ip = var.networkip
     access_config {
       nat_ip = var.nat_ip
     }
-    alias_ip_range {
-      ip_cidr_range = var.ip_cidr_range_alias
-    }
+   # alias_ip_range {
+    #  ip_cidr_range = var.ip_cidr_range_alias
+   # }
   }
   can_ip_forward = var.can_ip_forward
   description = var.description
