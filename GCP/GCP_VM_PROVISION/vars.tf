@@ -6,6 +6,11 @@ variable "project" {
 variable "Vmname" {
   type = string
   description = "Name of the VM"
+  validation {
+    condition = var.Vmname == "appes" && length(var.Vmname) > 0
+    error_message = "The VM name cannot be empty"
+  
+  }
 }
 
 variable "machine_type" {
